@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>商品詳細</title>
-<link href="css/commons.css" rel="stylesheet">
+<link href="../static/css/commons.css" rel="stylesheet">
 </head>
 <body>
 
@@ -13,7 +13,7 @@
       <p class="user_name">佐藤さん、こんにちは</p>
       <form class="logout_form" action="logout.html" method="get">
         <button class="custom-btn" type="submit">
-          <img src="images/ドアアイコン.png">ログアウト</button>
+          <img src="../static/images/ドアアイコン.png">ログアウト</button>
       </form>
     </div>
   </div>
@@ -23,7 +23,7 @@
   <div class="update">
     <div class="form-body">
       <div class="img_block">
-        <img src="images/マッキー.png" class="product-img"><br>
+        <img src="../static/images/マッキー.png" class="product-img"><br>
       </div>
       <form action="delete" method="post">
         <fieldset class="label-130 product_block">
@@ -70,7 +70,7 @@
     </div>
   </div>
   <div id="fadeLayer"></div>
-  <script src="./js/commons.js"></script>
+  <script src="js/commons.js"></script>
   <script>
     'use strict'
     document.getElementById('delete-btn').addEventListener('click', () => {

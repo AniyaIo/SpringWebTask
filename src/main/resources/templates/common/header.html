@@ -1,0 +1,13 @@
+<header xmlns:th="http://www.thymeleaf.org">
+    <div class="header">
+        <h1 class="site_logo"><a th:href="@{/menu}">商品管理システム</a></h1>
+        <div class="user">
+            <p class="user_name">[[ ${session.user.name} ]]さん、こんにちは</p>
+            <form class="logout_form" th:action="@{/logout}" method="GET">
+                <button class="custom-btn" type="submit">
+                    <img src="/images/ドアアイコン.png">ログアウト</button>
+            </form>
+        </div>
+    </div>
+    <hr>
+</header>

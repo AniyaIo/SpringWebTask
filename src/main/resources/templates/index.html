@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>ログイン</title>
+<link href="css/commons.css" rel="stylesheet">
+</head>
+<body class="login-body">
+  <div class="header">
+    <h1 class="site_logo">商品管理システム</h1>
+  </div>
+
+  <div class="login-form">
+    <img src="images/logo.png" class="login-logo" alt="ロゴ画像">
+<!--    ログイン失敗メッセージを出力する-->
+<!--    <p th:each="item:${loginFailedMessage} class="error"></p>-->
+    <p class="error">[[${loginFailedMessage}]]</p>
+    <form th:action="@{/index}" method="POST" th:object="${login_form}">
+      <fieldset>
+        <div class="cp_iptxt">
+          <label>
+            <input th:field="*{loginId}" class="base-input" type="text" name="loginId" placeholder="ID">
+          </label>
+          <div class="error" th:each="error: ${#fields.errors('loginId')}">
+            [[ ${error} ]]
+          </div>
+        </div>
+
+        <div>
+          <label>
+            <input th:field="*{password}" class="base-input" type="password" name="pass" placeholder="PASS">
+          </label>
+          <div class="error" th:each="error: ${#fields.errors('password')}">
+            [[ ${error} ]]
+          </div>
+        </div>
+      </fieldset>
+      <button type="submit" id="login-btn" class="custom-btn">
+          ログイン
+      </button>
+    </form>
+  </div>
+</body>
+</html>
