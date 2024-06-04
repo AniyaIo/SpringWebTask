@@ -12,10 +12,9 @@
 
   <div class="login-form">
     <img src="images/logo.png" class="login-logo" alt="ロゴ画像">
-<!--    ログイン失敗メッセージを出力する-->
 <!--    <p th:each="item:${loginFailedMessage} class="error"></p>-->
     <p class="error">[[${loginFailedMessage}]]</p>
-    <form th:action="@{/index}" method="POST" th:object="${login_form}">
+    <form th:action="@{/index}" method="POST" th:object="${loginForm}">
       <fieldset>
         <div class="cp_iptxt">
           <label>

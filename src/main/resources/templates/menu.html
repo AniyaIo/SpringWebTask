@@ -10,30 +10,37 @@
   <div id="app">
     <th:block th:insert="common/header"></th:block>
     <div class="btn-area">
-      <div class="btn"><a class="basic-btn regist" href="insert.html">新規登録</a></div>
+      <div class="btn"><a class="basic-btn regist" th:href="@{insert}">新規登録</a></div>
       <div class="btn"><a class="basic-btn regist" href="category.html">カテゴリ管理</a></div>
     </div>
     <p th:field="successMessage"></p>
-    <form method="get" action="#" class="search-form">
+    <form method="get" th:action="@{/menu}" th:object="${searchForm}" class="search-form">
       <div class="order">
-        <select name="order" class="base-text">
-          <option>並び替え</option>
-          <option>商品ID：昇順</option>
-          <option>商品ID：降順</option>
-          <option>カテゴリ：昇順</option>
-          <option>カテゴリ：降順</option>
-          <option>単価：安い順</option>
-          <option>単価：高い順</option>
+        <select th:field="*{sortRule}" name="order" class="base-text">
+          <option th:value="ID_ASC">並び替え</option>
+          <option th:value="ID_ASC">商品ID：昇順</option>
+          <option th:value="ID_DESC">商品ID：降順</option>
+          <option th:value="CATEGORY_ASC">カテゴリ：昇順</option>
+          <option th:value="CATEGORY_DESC">カテゴリ：降順</option>
+          <option th:value="PRICE_ASC">単価：安い順</option>
+          <option th:value="PRICE_DESC">単価：高い順</option>
+<!--            Pageableを使ってソートする時に使う(未実装)-->
+<!--          <option th:value="id,asc">商品ID：昇順</option>-->
+<!--          <option th:value="id,desc">商品ID：降順</option>-->
+<!--          <option th:value="category_id,asc">カテゴリ：昇順</option>-->
+<!--          <option th:value="category_id,desc">カテゴリ：降順</option>-->
+<!--          <option th:value="price,asc">単価：安い順</option>-->
+<!--          <option th:value="price,desc">単価：高い順</option>-->
         </select>
       </div>
       <div class="search-container">
-        <input type="text" name="keyword" size="25" placeholder="キーワード検索">
+        <input th:field="*{searchWord}" type="text" name="keyword" size="25" placeholder="キーワード検索">
         <input type="submit" value="&#xf002">
       </div>
     </form>
 
     <table>
-        <div class="caption"><p>検索結果：10件</p></div>
+        <div class="caption"><p>検索結果：[[${productCount}]]件</p></div>
       <thead>
         <tr>
           <th>商品ID</th>
@@ -46,8 +53,7 @@
       <tbody>
         <tr th:each="product : ${productList}">
           <td>
-            <div th:text="${product.id}"></div>
-            <a th:text="${product.id}" href="#" th:href="@{product/__${product.id}__}"></a>
+            <div th:text="${product.productId}"></div>
           </td>
           <td>
             <div th:text="${product.name}"></div>
@@ -56,10 +62,10 @@
             <div th:text="${product.price}"></div>
           </td>
           <td>
-            <div th:text="${product.category}"></div>
+            <div th:text="${product.categoryId}"></div>
           </td>
           <td>
-            <a th:text="詳細" href="#" th:href="@{detail/__${product.id}__}"></a>
+            <a class="detail_btn" th:text="詳細" href="#" th:href="@{detail/__${product.id}__}"></a>
           </td>
         </tr>
       </tbody>

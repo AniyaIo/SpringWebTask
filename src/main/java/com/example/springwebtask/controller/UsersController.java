@@ -26,13 +26,13 @@ public class UsersController {
     private MessageSource messageSource;
 
     @GetMapping("/index")
-    public String LoginForm(@ModelAttribute("login_form") LoginForm loginForm,
+    public String LoginForm(@ModelAttribute("loginForm") LoginForm loginForm,
                                  Model message) {
         message.addAttribute("login_failed_message","");
         return "/index";
     }
     @PostMapping("/index")
-    public String postLoginForm(@Validated @ModelAttribute("login_form") LoginForm loginForm,
+    public String postLoginForm(@Validated @ModelAttribute("loginForm") LoginForm loginForm,
                             BindingResult errorResult,
                             Model model) {
         if(errorResult.hasErrors()) {
@@ -44,7 +44,7 @@ public class UsersController {
         );
         if(id == (-1)){
             String msg=messageSource.getMessage("login.error",null, Locale.JAPAN);
-            //複数メッセージを記載したい場合putを使う事を忘れない
+            //複数メッセージを記載したい場合putを使う
 //            Map<String,Integer> map= new HashMap<>();
 //            map.put(msg,1);
 //            model.addAttribute("loginFailedMessage",map);

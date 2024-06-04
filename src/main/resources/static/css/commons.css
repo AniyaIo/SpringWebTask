@@ -89,6 +89,11 @@ table th,table td{
   border: none;
 }
 
+a.detail_btn{
+   background-color: rgba(0,0,0,0);
+   color: #000000;
+}
+
 table tr:nth-child(odd){
   background:#F7EFE3;
 }
