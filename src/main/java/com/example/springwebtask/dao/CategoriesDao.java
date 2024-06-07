@@ -27,6 +27,17 @@ public class CategoriesDao implements ICategoriesDao {
     }
 
     @Override
+    public CategoriesRecord findById(int id){
+        var param = new MapSqlParameterSource();
+        param.addValue("id", id);
+        var list=jdbcTemplate.query("SELECT * " +
+                        "FROM categories " +
+                        "WHERE id=:id;",
+                param,
+                new DataClassRowMapper<>(CategoriesRecord.class));
+        return list.isEmpty() ? null : list.get(0);
+    }
+    @Override
     public int insert(CategoriesRecord data){
         var param = new MapSqlParameterSource();
         param.addValue("name", data.name());

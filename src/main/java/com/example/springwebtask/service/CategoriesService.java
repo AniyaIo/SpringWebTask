@@ -18,6 +18,11 @@ public class CategoriesService implements ICategoriesService {
     }
 
     @Override
+    public String getNameFromId(int id){
+        var categoryData=categoriesDao.findById(id);
+        return categoryData.name();
+    }
+    @Override
     public int insert(CategoriesRecord data) {
         return categoriesDao.insert(data);
     }

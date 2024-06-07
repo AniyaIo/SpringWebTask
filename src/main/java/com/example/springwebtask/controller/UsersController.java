@@ -43,6 +43,7 @@ public class UsersController {
                 loginForm.getPassword()
         );
         if(id == (-1)){
+            //message.propertiesを使う為
             String msg=messageSource.getMessage("login.error",null, Locale.JAPAN);
             //複数メッセージを記載したい場合putを使う
 //            Map<String,Integer> map= new HashMap<>();
