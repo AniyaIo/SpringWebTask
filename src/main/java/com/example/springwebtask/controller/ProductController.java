@@ -133,8 +133,37 @@ public class ProductController {
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable("id") int id,
                          @ModelAttribute("deleteForm")DeleteForm deleteForm){
+        //SQL Exceptionをcatchする
         productService.delete(id);
         session.setAttribute("successMessage","削除に成功しました");
+        return "redirect:/success";
+    }
+
+    @GetMapping("/updateInput/{id}")
+    public String edit(@ModelAttribute("updateForm")InsertForm updateForm,
+                       @PathVariable("id") int id,
+                       Model model){
+        var productData=productService.findById(id);
+        updateForm.setProductId(productData.productId());
+        updateForm.setProductName(productData.name());
+        updateForm.setPrice(productData.price());
+        updateForm.setCategoryId(productData.categoryId());
+        updateForm.setDescription(productData.description());
+        model.addAttribute("id",id);
+        model.addAttribute("categoryList",categoriesService.findAll());
+        return "updateInput";
+    }
+
+    @PostMapping("/updateInput/{id}")
+    public String postEdit(@Validated @ModelAttribute("updateForm")InsertForm updateForm,
+                           BindingResult bindingResult,
+                           @PathVariable("id") int id){
+        if(bindingResult.hasErrors()) {
+            return "updateInput";
+        }
+//        更新処理を入れる
+
+        session.setAttribute("successMessage","更新に成功しました");
         return "redirect:/success";
     }
 }

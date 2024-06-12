@@ -42,7 +42,7 @@
         <div>
           <div class="btns">
             <input type="button" onclick="openModal()" value="削除" class="basic-btn">
-            <input type="button" onclick="location.href='./updateInput'" value="編集" class="basic-btn">
+            <input type="button" value="編集" class="basic-btn" id="edit-btn">
             <input type="button" onclick="location.href='/menu'" value="戻る" class="cancel-btn">
           </div>
           <div id="modal">
@@ -62,6 +62,10 @@
     'use strict'
     document.getElementById('delete-btn').addEventListener('click', () => {
       location.href = '/delete/[[${id}]]'
+    })
+
+    document.getElementById('edit-btn').addEventListener('click', () => {
+      location.href = '/updateInput/[[${id}]]'
     })
   </script>
 </body>
