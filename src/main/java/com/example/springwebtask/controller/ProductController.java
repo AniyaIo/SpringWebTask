@@ -119,22 +119,32 @@ public class ProductController {
         return "redirect:/success";
     }
 
+    ////////////////POSTに変更する//////////////
     @Transactional
     @GetMapping("/detail/{id}")
     public String getDetail(@PathVariable("id") int id,
                             @ModelAttribute("deleteForm")DeleteForm deleteForm,
                             Model model){
         var productData=productService.findById(id);
+        deleteForm.setId(id);
         model.addAttribute("product",productData);
         model.addAttribute("category",categoriesService.getNameFromId(Integer.parseInt(productData.categoryId())));
         return ("detail");
     }
 
-    @GetMapping("/delete/{id}")
-    public String delete(@PathVariable("id") int id,
-                         @ModelAttribute("deleteForm")DeleteForm deleteForm){
+//    @GetMapping("/delete/{id}")
+//    public String delete(@PathVariable("id") int id,
+//                         @ModelAttribute("deleteForm")DeleteForm deleteForm){
+//        //SQL Exceptionをcatchする
+//        productService.delete(id);
+//        session.setAttribute("successMessage","削除に成功しました");
+//        return "redirect:/success";
+//    }
+
+    @PostMapping("/delete")
+    public String delete(@ModelAttribute("deleteForm")DeleteForm deleteForm){
         //SQL Exceptionをcatchする
-        productService.delete(id);
+        productService.delete(deleteForm.getId());
         session.setAttribute("successMessage","削除に成功しました");
         return "redirect:/success";
     }
@@ -143,6 +153,10 @@ public class ProductController {
     public String edit(@ModelAttribute("updateForm")InsertForm updateForm,
                        @PathVariable("id") int id,
                        Model model){
+        var sessionData=(UsersRecord)session.getAttribute("user");
+        if(sessionData.role()!=1){
+            return "redirect:/menu";
+        }
         var productData=productService.findById(id);
         updateForm.setProductId(productData.productId());
         updateForm.setProductName(productData.name());
@@ -157,12 +171,26 @@ public class ProductController {
     @PostMapping("/updateInput/{id}")
     public String postEdit(@Validated @ModelAttribute("updateForm")InsertForm updateForm,
                            BindingResult bindingResult,
-                           @PathVariable("id") int id){
+                           @PathVariable("id") int id,
+                           Model model){
         if(bindingResult.hasErrors()) {
+            model.addAttribute("id",id);
+            model.addAttribute("categoryList",categoriesService.findAll());
             return "updateInput";
         }
 //        更新処理を入れる
-
+        productService.update(new ProductsRecord(
+                id,
+                updateForm.getProductId(),
+                updateForm.getCategoryId(),
+                updateForm.getProductName(),
+                updateForm.getPrice(),
+                "",
+                updateForm.getDescription(),
+                new Timestamp(0),
+                new Timestamp(0)
+                )
+        );
         session.setAttribute("successMessage","更新に成功しました");
         return "redirect:/success";
     }

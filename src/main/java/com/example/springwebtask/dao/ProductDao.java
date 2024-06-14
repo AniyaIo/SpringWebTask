@@ -86,10 +86,10 @@ public class ProductDao implements IProductDao {
     public int update(ProductsRecord data){
         var param = new MapSqlParameterSource();
         param.addValue("id", data.id());
-        param.addValue("product_id", data.productId());
-        param.addValue("category_id", data.categoryId());
+        param.addValue("product_id", Integer.valueOf(data.productId()));
+        param.addValue("category_id", Integer.valueOf(data.categoryId()));
         param.addValue("name", data.name());
-        param.addValue("price", data.price());
+        param.addValue("price", Integer.valueOf(data.price()));
         param.addValue("updated_at", new Timestamp(System.currentTimeMillis()));
 
         return jdbcTemplate.update(

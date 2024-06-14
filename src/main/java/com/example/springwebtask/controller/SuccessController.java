@@ -14,7 +14,6 @@ public class SuccessController {
     public String success(Model model){
         var message=(String)session.getAttribute("successMessage");
         model.addAttribute("message",message);
-        System.out.println("success:"+message);
         session.removeAttribute("successMessage");
         return "success";
     }
