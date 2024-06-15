@@ -24,6 +24,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -84,6 +85,10 @@ public class ProductController {
     @GetMapping("/insert")
     public String insert(@ModelAttribute("insertForm") InsertForm insertForm,
                          Model model){
+        var sessionData=(UsersRecord)session.getAttribute("user");
+        if(sessionData.role()!=1){
+            return "redirect:/menu";
+        }
         model.addAttribute("categoryList",categoriesService.findAll());
         return "insert";
     }
@@ -153,6 +158,7 @@ public class ProductController {
     public String edit(@ModelAttribute("updateForm")InsertForm updateForm,
                        @PathVariable("id") int id,
                        Model model){
+        model.addAttribute("errorMessage","");
         var sessionData=(UsersRecord)session.getAttribute("user");
         if(sessionData.role()!=1){
             return "redirect:/menu";
@@ -168,6 +174,7 @@ public class ProductController {
         return "updateInput";
     }
 
+//    エラーメッセージ出力する
     @PostMapping("/updateInput/{id}")
     public String postEdit(@Validated @ModelAttribute("updateForm")InsertForm updateForm,
                            BindingResult bindingResult,
@@ -179,18 +186,26 @@ public class ProductController {
             return "updateInput";
         }
 //        更新処理を入れる
-        productService.update(new ProductsRecord(
-                id,
-                updateForm.getProductId(),
-                updateForm.getCategoryId(),
-                updateForm.getProductName(),
-                updateForm.getPrice(),
-                "",
-                updateForm.getDescription(),
-                new Timestamp(0),
-                new Timestamp(0)
-                )
-        );
+        try {
+            productService.update(new ProductsRecord(
+                            id,
+                            updateForm.getProductId(),
+                            updateForm.getCategoryId(),
+                            updateForm.getProductName(),
+                            updateForm.getPrice(),
+                            "",
+                            updateForm.getDescription(),
+                            new Timestamp(0),
+                            new Timestamp(0)
+                    )
+            );
+        }catch (DuplicateKeyException e){
+            model.addAttribute("errorMessage","商品コードが重複しています");
+            model.addAttribute("id",id);
+            model.addAttribute("categoryList",categoriesService.findAll());
+            return "updateInput";
+        }
+        model.addAttribute("errorMessage","");
         session.setAttribute("successMessage","更新に成功しました");
         return "redirect:/success";
     }

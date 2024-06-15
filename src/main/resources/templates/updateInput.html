@@ -11,7 +11,7 @@
   <div class="insert">
     <div class="form-body">
 <!--        prodcutIdが重複している場合にエラーメッセージ-->
-      <p class="error">エラーメッセージ</p>
+      <p th:text="${errorMessage}" class="error"></p>
 
       <form th:action="@{/updateInput/__${id}__}" th:object="${updateForm}" method="post">
         <fieldset class="label-130">
